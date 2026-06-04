@@ -22,7 +22,7 @@ Commande pour tester le flag :
 
 ```./1.cantBeEasier COOKIE{CantBeEasierRight?\!}```
 
-PS: Si je mets pas "\!", j'avais cette erreur : "-bash: !}: event not found"
+PS: Si je mets pas "\\!", j'avais cette erreur : "-bash: !}: event not found"
 
 ## 2.couldBeEasier
 
