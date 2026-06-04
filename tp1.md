@@ -19,7 +19,9 @@ libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000075afc5000000)
 Flag directement visible dans Ghidra à 0x00101192
 
 Commande pour tester le flag : 
+
 ```./1.cantBeEasier COOKIE{CantBeEasierRight?\!}```
+
 PS: Si je mets pas "\!", j'avais cette erreur : "-bash: !}: event not found"
 
 ## 2.couldBeEasier
