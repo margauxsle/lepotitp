@@ -116,7 +116,16 @@ drwxr-xr-x 5 nezuko nezuko 4.0K Jun  6 16:01 ..
 
 Recherche de mots clé suspects dans le fichier malware_log.txt :
 ```
-renameat(AT_FDCWD, "./linux_amd64_malware", AT_FDCWD, "/root/.bashrc.bak" <unfinished ...>
+nezuko@nezuko-vm:~/Downloads/test_malware$ grep -E "rename|openat|connect|socket|write" malware_log.txt
+9252  openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+[...]
+9252  renameat(AT_FDCWD, "./linux_amd64_malware", AT_FDCWD, "/root/.bashrc.bak" <unfinished ...>
+9252  <... renameat resumed>)           = 0
+9252  openat(AT_FDCWD, "./", O_RDONLY|O_CLOEXEC|O_DIRECTORY <unfinished ...>
+9252  <... openat resumed>)             = 3
+9252  openat(AT_FDCWD, "malware_log.txt", O_RDONLY|O_CLOEXEC <unfinished ...>
+9252  <... openat resumed>)             = 3
+
 nezuko@nezuko-vm:~/Downloads/test_malware$ sudo ls -la /root/
 [...]
 -rwxrwxr-x  1 nezuko nezuko 9299822 Jun  6 14:44 .bashrc.bak
