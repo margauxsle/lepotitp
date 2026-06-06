@@ -30,6 +30,8 @@ Modifications des permissions des fichiers, communication avec un serveur exteri
 
 ### Est-ce qu'il y a un kill switch, aka un moyen d'inverser ses dégats ?
 
+Oui en ajoutant l'argument 'decrypt' lors de l'appel du malware
+
 ## Méthodologie
 
 ### Reconnaissance :
