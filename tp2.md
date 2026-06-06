@@ -8,7 +8,7 @@ ou vers (appel dans le main à une fonction de propagation latérale)
 
 ### Est-ce qu’il interagit avec le système ? Comment ?
 
-Oui vu qu'il chiffre et déchiffre des fichiers, il interagit donc avec les permissions
+Oui vu qu'il chiffre et déchiffre des fichiers, il interagit donc avec les permissions. Pendant son exécution, il va aussi se déplacer dans le répertoire /root/
 
 ### Est-ce qu’il communique avec l’extérieur ?
 
@@ -16,9 +16,11 @@ Oui, communication avec un serveur extérieur (NotifyRemoteServer())
 
 ### Est-ce qu’il y a une logique de persistance ou de dissimulation ?
 
-Plutot de dissumulation (fonction hideYouself())
+Dissumulation surtout (fonction hideYouself()), mais aussi de persistance car lors de l'exécution du malware, il change de répertoire et de nom, pour passer inaperçu.
 
 ### Est-ce qu’il exploite quelque chose ?
+
+Non, je n'ai pas trouvé de preuve
 
 ### Quels sont les impacts sur une machine infectée ?
 
@@ -64,7 +66,7 @@ crypto/internal/fips140/hkdf..dict.Expand[*crypto/internal/fips140/sha256.Digest
 crypto/internal/fips140/ecdsa..
 [...]
 ```
-### Ghidra (main)
+### Analyse statique avec Ghidra :
 ```
 /* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
@@ -90,7 +92,37 @@ void main.main(void)
   return;
 }
 ```
+### Analyse dynamique :
 
+```
+nezuko@nezuko-vm:~/Downloads/test_malware$ echo 'test1' > test1.txt
+nezuko@nezuko-vm:~/Downloads/test_malware$ echo 'test2' > test2.txt
+nezuko@nezuko-vm:~/Downloads/test_malware$ ls -lah
+total 8.9M
+drwxrwxr-x 2 nezuko nezuko 4.0K Jun  6 16:02 .
+drwxr-xr-x 5 nezuko nezuko 4.0K Jun  6 16:01 ..
+-rw-rw-r-- 1 nezuko nezuko 8.9M Jun  6 14:44 linux_amd64_malware
+-rw-rw-r-- 1 nezuko nezuko    6 Jun  6 16:02 test1.txt
+-rw-rw-r-- 1 nezuko nezuko    6 Jun  6 16:02 test2.txt
+nezuko@nezuko-vm:~/Downloads/test_malware$ chmod +x linux_amd64_malware 
+nezuko@nezuko-vm:~/Downloads/test_malware$ sudo strace -f -o malware_log.txt ./linux_amd64_malware
+nezuko@nezuko-vm:~/Downloads/test_malware$ ls -lah
+total 19M
+drwxrwxr-x 2 nezuko nezuko 4.0K Jun  6 16:05 .
+drwxr-xr-x 5 nezuko nezuko 4.0K Jun  6 16:01 ..
+-rw-rw-r-- 1 nezuko nezuko  19M Jun  6 16:06 malware_log.txt
+-rw-rw-r-- 1 nezuko nezuko    6 Jun  6 16:02 test1.txt
+-rw-rw-r-- 1 nezuko nezuko    6 Jun  6 16:02 test2.txt
+```
+
+Recherche de mots clé suspects dans le fichier malware_log.txt :
+```
+renameat(AT_FDCWD, "./linux_amd64_malware", AT_FDCWD, "/root/.bashrc.bak" <unfinished ...>
+nezuko@nezuko-vm:~/Downloads/test_malware$ sudo ls -la /root/
+[...]
+-rwxrwxr-x  1 nezuko nezuko 9299822 Jun  6 14:44 .bashrc.bak
+[...]
+```
 
 ## Observations
 
@@ -109,3 +141,5 @@ Dans le main, comparaison de l'argument passé en paramètre aux chaînes en hex
 Comparaison donc avec "decrypted".
 
 Appel dans le main des fonctions "EncryptFiles()" et "DecryptFiles()", "Latteralize();", "NotifyRemoteServer();" et "hideYouself()"
+
+Pendant l'analyse dynamique, on peut voir que le malware s'est déplacé dans le dossier /root et s'est renommé en .bashrc.bak, pour faire genre que c'est une backup et passer inaperçu.
