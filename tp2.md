@@ -3,8 +3,7 @@
 
 ### À quelle(s) famille(s) ce malware peut être rattaché ?
 
-Ransomware ? (présence de lib de crypto, analyse du main, présence de fonction de chiffrement/déchiffrement)
-ou vers (appel dans le main à une fonction de propagation latérale)
+Je dirais un mélange entre un ransomware et un vers (présence de lib de crypto, présence de fonction de chiffrement/déchiffrement, appel dans le main à une fonction de propagation latérale)
 
 ### Est-ce qu’il interagit avec le système ? Comment ?
 
