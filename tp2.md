@@ -64,7 +64,7 @@ crypto/internal/fips140/hkdf..dict.Expand[*crypto/internal/fips140/sha256.Digest
 crypto/internal/fips140/ecdsa..
 [...]
 ```
-### Analyse statique :
+### Ghidra (main)
 ```
 /* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
